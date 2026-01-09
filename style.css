@@ -1,85 +1,78 @@
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
-body { 
-    background-color: #f4f7f6; 
-    background-attachment: fixed; /* O fundo não rola com o conteúdo */
-    min-height: 100vh; 
-    display: flex; 
-    justify-content: center; 
-    align-items: flex-start; 
-    margin: 0; 
+/* Reset para evitar o "bloco branco" lateral */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Faz com que o padding não aumente a largura do site */
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+body {
+    background-color: #f4f7f6;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
     padding: 20px;
+    overflow-x: hidden; /* Mata o bug do fundo duplicado/cortado */
 }
 
-main { 
-    background: white; 
-    width: 100%; 
-    max-width: 450px; 
-    padding: 25px; 
-    border-radius: 15px; 
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
-    margin: 0 auto; /* Reforça a centralização */
+main {
+    background: white;
+    width: 100%;
+    max-width: 450px;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
-main.wide { 
-    max-width: 600px; /* Mantém o Dashboard um pouco mais largo */
-}
-
-h2 { margin-bottom: 20px; text-align: center; color: #333; }
-
-/* Menu Principal */
-.menu-grid { display: flex; flex-direction: column; gap: 15px; }
-.menu-card { padding: 25px; text-align: center; text-decoration: none; color: white; border-radius: 10px; font-weight: bold; transition: 0.2s; }
-.menu-card:hover { transform: translateY(-3px); opacity: 0.9; }
-
-/* Cores */
-.verde { background: #27ae60; }
-.vermelho { background: #e74c3c; }
-.azul { background: #3498db; }
-
-/* Formulários */
-input, select { width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 8px; }
-button { width: 100%; padding: 15px; border: none; background: #2ecc71; color: white; font-weight: bold; border-radius: 8px; cursor: pointer; }
-
-/* Dashboard Cards */
-.resumo { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-.resumo .azul { grid-column: span 2; }
-.card { padding: 15px; border-radius: 10px; text-align: center; color: white; font-size: 0.9rem; }
-.card span { display: block; font-size: 1.2rem; font-weight: bold; }
-
-/* Itens do Extrato */
-.item-extrato { display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #eee; }
-.item-extrato.ganho { border-left: 5px solid #27ae60; }
-.item-extrato.gasto { border-left: 5px solid #e74c3c; }
-.item-extrato .info { display: flex; flex-direction: column; }
-.item-extrato .info span { font-size: 0.8rem; color: #666; }
-.item-extrato .info small { font-size: 0.7rem; color: #999; }
-.item-extrato .valor { font-weight: bold; }
-
+/* Padronização dos Botões de Excluir */
 .btn-excluir { 
     background: #ff4757; 
     color: white; 
     border: none; 
-    padding: 8px 0; /* Aumentei um pouco o respiro vertical */
-    border-radius: 5px; 
+    border-radius: 6px; 
     cursor: pointer; 
     font-size: 0.75rem;
     font-weight: bold;
-    width: 80px; /* Define um tamanho fixo para todos */
-    text-align: center;
-    transition: 0.2s;
+    
+    /* Largura e altura idênticas para todos */
+    width: 85px; 
+    height: 32px; 
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-top: 5px;
-    display: inline-block; /* Garante que respeite a largura */
+    margin-left: auto; 
+    transition: 0.2s;
 }
 
-.btn-excluir:hover { 
-    background: #ff6b81; 
-    transform: scale(1.05);
+.btn-excluir:hover { background: #ff6b81; }
+
+/* Estilo para Inputs e Botões de Salvar */
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
 }
 
-/* Ajuste no container do valor para alinhar o botão à direita */
-.item-extrato .valor {
-    text-align: right;
-    min-width: 90px; /* Garante espaço para o botão não empurrar o texto */
+button {
+    width: 100%;
+    padding: 15px;
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
-.btn-voltar { display: block; text-align: center; margin-top: 20px; color: #666; text-decoration: none; font-size: 0.9rem; }
+.btn-voltar {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    color: #666;
+    text-decoration: none;
+}
