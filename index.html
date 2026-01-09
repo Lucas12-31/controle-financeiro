@@ -3,20 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestão Financeira</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Meu Financeiro - Menu</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+        body { background: #f4f7f6; display: flex; justify-content: center; padding: 20px; min-height: 100vh; }
+        main { background: white; width: 100%; max-width: 400px; padding: 25px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; }
+        h1 { color: #2c3e50; margin-bottom: 20px; }
+        .menu-grid { display: flex; flex-direction: column; gap: 15px; }
+        .btn-menu { padding: 20px; text-decoration: none; color: white; border-radius: 10px; font-weight: bold; transition: 0.2s; }
+        .btn-menu:hover { transform: scale(1.02); opacity: 0.9; }
+        .verde { background: #27ae60; }
+        .vermelho { background: #e74c3c; }
+        .azul { background: #3498db; }
+    </style>
 </head>
 <body>
     <main>
-        <header>
-            <h1>Gestão Financeira</h1>
-            <p>O que você deseja fazer hoje?</p>
-        </header>
-
+        <h1>💰 Financeiro</h1>
         <div class="menu-grid">
-            <a href="ganhos.html" class="menu-card verde">💰 Lançar Ganho</a>
-            <a href="gastos.html" class="menu-card vermelho">💸 Lançar Gasto</a>
-            <a href="dashboard.html" class="menu-card azul">📊 Ver Dashboard</a>
+            <a href="ganhos.html" class="btn-menu verde">Lançar Ganho</a>
+            <a href="gastos.html" class="btn-menu vermelho">Lançar Gasto</a>
+            <a href="dashboard.html" class="btn-menu azul">Ver Dashboard</a>
         </div>
     </main>
 </body>
