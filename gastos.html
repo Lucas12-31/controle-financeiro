@@ -4,17 +4,90 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lançar Gastos</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        /* O segredo para não ter o 'bloco branco' lateral */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Segoe UI', sans-serif; 
+        }
+
+        body { 
+            background-color: #f4f7f6; 
+            display: flex; 
+            justify-content: center; 
+            align-items: flex-start; 
+            min-height: 100vh; 
+            padding: 20px; 
+        }
+
+        main { 
+            background: white; 
+            width: 100%; 
+            max-width: 400px; 
+            padding: 25px; 
+            border-radius: 15px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
+        }
+
+        h2 { color: #2c3e50; margin-bottom: 20px; text-align: center; }
+
+        label { display: block; margin-bottom: 5px; font-size: 0.9rem; color: #666; }
+
+        input, select { 
+            width: 100%; 
+            padding: 12px; 
+            margin-bottom: 15px; 
+            border: 1px solid #ddd; 
+            border-radius: 8px; 
+            outline: none;
+        }
+
+        input:focus { border-color: #3498db; }
+
+        button { 
+            width: 100%; 
+            padding: 15px; 
+            border: none; 
+            background: #e74c3c; /* Vermelho para gastos */
+            color: white; 
+            font-weight: bold; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-size: 1rem;
+            transition: 0.2s;
+        }
+
+        button:hover { background: #c0392b; }
+
+        .btn-voltar { 
+            display: block; 
+            text-align: center; 
+            margin-top: 15px; 
+            color: #666; 
+            text-decoration: none; 
+            font-size: 0.9rem; 
+        }
+    </style>
 </head>
 <body>
     <main>
-        <h2>💸 Lançar Novo Gasto</h2>
-        
-        <input type="text" id="descGasto" placeholder="Descrição (Ex: Uber)">
-        <input type="number" id="valorGasto" placeholder="Valor R$">
-        <input type="date" id="dataGasto">
-        <input type="text" id="localGasto" placeholder="Local (Ex: Shopping)">
+        <h2>💸 Novo Gasto</h2>
 
+        <label>O que você comprou?</label>
+        <input type="text" id="descGasto" placeholder="Ex: Assinatura Netflix">
+
+        <label>Quanto custou?</label>
+        <input type="number" id="valorGasto" placeholder="R$ 0.00">
+
+        <label>Quando foi?</label>
+        <input type="date" id="dataGasto">
+
+        <label>Onde foi?</label>
+        <input type="text" id="localGasto" placeholder="Ex: Streaming / Loja">
+
+        <label>Categoria</label>
         <select id="categoriaGasto">
             <option value="Alimentação">Alimentação</option>
             <option value="Transporte">Transporte</option>
@@ -37,21 +110,27 @@
             const desc = document.getElementById('descGasto').value;
             const valor = document.getElementById('valorGasto').value;
             const data = document.getElementById('dataGasto').value;
+            const local = document.getElementById('localGasto').value;
+            const categoria = document.getElementById('categoriaGasto').value;
 
-            if(!desc || !valor || !data) return alert("Preencha os campos principais!");
+            if(!desc || !valor || !data) return alert("Por favor, preencha os campos principais!");
 
-            await addDoc(collection(db, "transacoes"), {
-                descricao: desc,
-                valor: parseFloat(valor),
-                dataOcorrencia: data,
-                local: document.getElementById('localGasto').value,
-                categoria: document.getElementById('categoriaGasto').value,
-                tipo: 'gasto',
-                dataRegistro: new Date()
-            });
-
-            alert("Gasto registrado com sucesso!");
-            window.location.href = "index.html";
+            try {
+                await addDoc(collection(db, "transacoes"), {
+                    descricao: desc,
+                    valor: parseFloat(valor),
+                    dataOcorrencia: data,
+                    local: local || "N/A",
+                    categoria: categoria,
+                    tipo: 'gasto',
+                    dataRegistro: new Date()
+                });
+                alert("Gasto registrado!");
+                window.location.href = "index.html";
+            } catch (e) {
+                console.error("Erro ao salvar: ", e);
+                alert("Erro ao salvar. Verifique o console.");
+            }
         };
     </script>
 </body>
