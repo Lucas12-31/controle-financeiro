@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Gastos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Meu Financeiro</h1>
+        <nav>
+            <button onclick="navegar('ganhos')">Ganhos</button>
+            <button onclick="navegar('gastos')">Gastos</button>
+            <button onclick="navegar('dashboard')">Dashboard</button>
+        </nav>
+    </header>
+
+    <main>
+        <section id="tela-ganhos" class="tela">
+            <h2>Lançar Ganhos</h2>
+            <input type="text" id="descGanho" placeholder="Descrição (Ex: Salário)">
+            <input type="number" id="valorGanho" placeholder="Valor R$">
+            <button onclick="salvar('ganho')">Adicionar Ganho</button>
+        </section>
+
+        <section id="tela-gastos" class="tela" style="display:none">
+            <h2>Lançar Gastos</h2>
+            <input type="text" id="descGasto" placeholder="Descrição (Ex: Aluguel)">
+            <input type="number" id="valorGasto" placeholder="Valor R$">
+            <button onclick="salvar('gasto')">Adicionar Gasto</button>
+        </section>
+
+        <section id="tela-dashboard" class="tela" style="display:none">
+            <div class="resumo">
+                <div class="card verde">Recebido: <span id="totalGanhos">R$ 0</span></div>
+                <div class="card vermelho">Gasto: <span id="totalGastos">R$ 0</span></div>
+                <div class="card azul">Saldo: <span id="saldo">R$ 0</span></div>
+            </div>
+            <h3>Extrato Detalhado</h3>
+            <div id="extrato"></div>
+        </section>
+    </main>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
