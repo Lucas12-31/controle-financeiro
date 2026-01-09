@@ -1,13 +1,13 @@
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
 body { 
     background-color: #f4f7f6; 
+    background-attachment: fixed; /* O fundo não rola com o conteúdo */
+    min-height: 100vh; 
     display: flex; 
     justify-content: center; 
-    align-items: flex-start; /* Alinha o conteúdo no topo */
-    min-height: 100vh; /* Garante que o fundo cubra a tela toda */
+    align-items: flex-start; 
     margin: 0; 
     padding: 20px;
-    overflow-x: hidden; /* Evita que a página "dance" para os lados */
 }
 
 main { 
@@ -54,5 +54,32 @@ button { width: 100%; padding: 15px; border: none; background: #2ecc71; color: w
 .item-extrato .info span { font-size: 0.8rem; color: #666; }
 .item-extrato .info small { font-size: 0.7rem; color: #999; }
 .item-extrato .valor { font-weight: bold; }
+
+.btn-excluir { 
+    background: #ff4757; 
+    color: white; 
+    border: none; 
+    padding: 8px 0; /* Aumentei um pouco o respiro vertical */
+    border-radius: 5px; 
+    cursor: pointer; 
+    font-size: 0.75rem;
+    font-weight: bold;
+    width: 80px; /* Define um tamanho fixo para todos */
+    text-align: center;
+    transition: 0.2s;
+    margin-top: 5px;
+    display: inline-block; /* Garante que respeite a largura */
+}
+
+.btn-excluir:hover { 
+    background: #ff6b81; 
+    transform: scale(1.05);
+}
+
+/* Ajuste no container do valor para alinhar o botão à direita */
+.item-extrato .valor {
+    text-align: right;
+    min-width: 90px; /* Garante espaço para o botão não empurrar o texto */
+}
 
 .btn-voltar { display: block; text-align: center; margin-top: 20px; color: #666; text-decoration: none; font-size: 0.9rem; }
