@@ -5,10 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Financeiro</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .filtro-container { margin-bottom: 20px; text-align: center; }
+        .btn-excluir { 
+    background: #ff4757; 
+    color: white; 
+    border: none; 
+    padding: 8px 0; /* Aumentei um pouco o respiro vertical */
+    border-radius: 5px; 
+    cursor: pointer; 
+    font-size: 0.75rem;
+    font-weight: bold;
+    width: 80px; /* Define um tamanho fixo para todos */
+    text-align: center;
+    transition: 0.2s;
+    margin-top: 5px;
+    display: inline-block; /* Garante que respeite a largura */
+}
+
+.btn-excluir:hover { 
+    background: #ff6b81; 
+    transform: scale(1.05);
+}
+
+/* Ajuste no container do valor para alinhar o botão à direita */
+.item-extrato .valor {
+    text-align: right;
+    min-width: 90px; /* Garante espaço para o botão não empurrar o texto */
+}
+    </style>
 </head>
 <body>
     <main class="wide">
         <h2>📊 Resumo Geral</h2>
+        
+        <div class="filtro-container">
+            <label>Filtrar por Mês: </label>
+            <select id="filtroMes" onchange="carregarDados()">
+                <option value="todos">Todos os meses</option>
+                <option value="atual" selected>Mês Atual</option>
+            </select>
+        </div>
+
         <div class="resumo">
             <div class="card verde">Ganhos: <span id="totalGanhos">R$ 0</span></div>
             <div class="card vermelho">Gastos: <span id="totalGastos">R$ 0</span></div>
@@ -16,36 +54,63 @@
         </div>
 
         <h3>Extrato Detalhado</h3>
-        <div id="extrato">
-            </div>
+        <div id="extrato"></div>
         
         <a href="index.html" class="btn-voltar">Voltar ao Menu</a>
     </main>
 
     <script type="module">
         import { db } from './firebase-config.js';
-        import { collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
+        import { collection, getDocs, query, orderBy, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
+
+        // Função para deletar um item
+        window.excluirItem = async (id) => {
+            if(confirm("Tem certeza que deseja excluir este lançamento?")) {
+                await deleteDoc(doc(db, "transacoes", id));
+                alert("Excluído com sucesso!");
+                carregarDados(); // Recarrega o dashboard
+            }
+        };
 
         async function carregarDados() {
             const q = query(collection(db, "transacoes"), orderBy("dataOcorrencia", "desc"));
             const querySnapshot = await getDocs(q);
+            const filtro = document.getElementById('filtroMes').value;
             
+            const hoje = new Date();
+            const mesAtual = hoje.getMonth() + 1; // Janeiro é 0
+            const anoAtual = hoje.getFullYear();
+
             let tGanhos = 0, tGastos = 0, html = "";
 
-            querySnapshot.forEach((doc) => {
-                const d = doc.data();
+            querySnapshot.forEach((documento) => {
+                const d = documento.data();
+                const id = documento.id;
+                
+                // Lógica do Filtro de Mês
+                const dataTransacao = new Date(d.dataOcorrencia + "T00:00:00");
+                const mesTransacao = dataTransacao.getMonth() + 1;
+                const anoTransacao = dataTransacao.getFullYear();
+
+                if (filtro === "atual" && (mesTransacao !== mesAtual || anoTransacao !== anoAtual)) {
+                    return; // Pula este item se não for do mês atual
+                }
+
                 if(d.tipo === 'ganho') tGanhos += d.valor;
                 else tGastos += d.valor;
 
-                // Aqui montamos a linha do extrato com Local e Categoria se houver
                 html += `
                     <div class="item-extrato ${d.tipo}">
                         <div class="info">
                             <strong>${d.descricao}</strong>
-                            <span>${d.categoria || 'Ganho'} | ${d.local || 'Geral'}</span>
+                            <span>${d.categoria || 'Geral'} | ${d.local || 'N/A'}</span>
                             <small>${d.dataOcorrencia}</small>
                         </div>
-                        <div class="valor">R$ ${d.valor.toFixed(2)}</div>
+                        <div class="valor">
+                            R$ ${d.valor.toFixed(2)}
+                            <br>
+                            <button class="btn-excluir" onclick="excluirItem('${id}')">Excluir</button>
+                        </div>
                     </div>`;
             });
 
@@ -55,6 +120,7 @@
             document.getElementById('extrato').innerHTML = html;
         }
 
+        window.carregarDados = carregarDados;
         carregarDados();
     </script>
 </body>
