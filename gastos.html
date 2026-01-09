@@ -1,0 +1,37 @@
+<h2>Lançar Novo Gasto</h2>
+<input type="text" id="descGasto" placeholder="Descrição (Ex: Uber)">
+<input type="number" id="valorGasto" placeholder="Valor R$">
+<input type="date" id="dataGasto">
+<input type="text" id="localGasto" placeholder="Local (Ex: Shopping)">
+
+<select id="categoriaGasto">
+    <option value="Alimentação">Alimentação</option>
+    <option value="Transporte">Transporte</option>
+    <option value="Lazer">Lazer</option>
+    <option value="Saúde">Saúde</option>
+    <option value="Outros">Outros</option>
+</select>
+
+<button id="btnSalvarGasto">Salvar Gasto</button>
+<a href="index.html">Voltar ao Menu</a>
+
+<script type="module">
+    import { db } from './firebase-config.js';
+    import { collection, addDoc } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
+
+    document.getElementById('btnSalvarGasto').onclick = async () => {
+        const dados = {
+            descricao: document.getElementById('descGasto').value,
+            valor: parseFloat(document.getElementById('valorGasto').value),
+            dataOcorrencia: document.getElementById('dataGasto').value,
+            local: document.getElementById('localGasto').value,
+            categoria: document.getElementById('categoriaGasto').value,
+            tipo: 'gasto',
+            dataRegistro: new Date()
+        };
+
+        await addDoc(collection(db, "transacoes"), dados);
+        alert("Gasto registrado!");
+        window.location.href = "index.html"; // Volta pro menu
+    };
+</script>
