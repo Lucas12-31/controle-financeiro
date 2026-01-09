@@ -19,5 +19,23 @@
             <a href="dashboard.html" class="menu-card azul">📊 Ver Dashboard</a>
         </div>
     </main>
+    <script type="module">
+import { auth } from './firebase-config.js';
+import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+
+// Trava de segurança: Se não estiver logado, volta para o login
+onAuthStateChanged(auth, (user) => {
+    if (!user) {
+        window.location.href = "login.html";
+    }
+});
+
+// Se for o index.html, você pode adicionar a função de sair
+window.sair = async () => {
+    await signOut(auth);
+    window.location.href = "login.html";
+};
+    </script>
+    <button onclick="sair()" class="btn-menu" style="background: #7f8c8d; border:none; cursor:pointer; margin-top:10px;">Encerrar Sessão</button>
 </body>
 </html>
