@@ -1,7 +1,28 @@
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
-body { background: #f4f7f6; display: flex; justify-content: center; padding: 20px; }
-main { background: white; width: 100%; max-width: 450px; padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-main.wide { max-width: 600px; }
+body { 
+    background-color: #f4f7f6; 
+    display: flex; 
+    justify-content: center; 
+    align-items: flex-start; /* Alinha o conteúdo no topo */
+    min-height: 100vh; /* Garante que o fundo cubra a tela toda */
+    margin: 0; 
+    padding: 20px;
+    overflow-x: hidden; /* Evita que a página "dance" para os lados */
+}
+
+main { 
+    background: white; 
+    width: 100%; 
+    max-width: 450px; 
+    padding: 25px; 
+    border-radius: 15px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+    margin: 0 auto; /* Reforça a centralização */
+}
+
+main.wide { 
+    max-width: 600px; /* Mantém o Dashboard um pouco mais largo */
+}
 
 h2 { margin-bottom: 20px; text-align: center; color: #333; }
 
