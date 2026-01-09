@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lançar Ganhos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main>
+        <h2>💰 Novo Ganho</h2>
+        <input type="text" id="descGanho" placeholder="Descrição (Ex: Salário)">
+        <input type="number" id="valorGanho" placeholder="Valor R$">
+        <input type="date" id="dataGanho">
+        
+        <button id="btnSalvarGanho">Salvar Ganho</button>
+        <a href="index.html" class="btn-voltar">Voltar ao Menu</a>
+    </main>
+
+    <script type="module">
+        import { db } from './firebase-config.js';
+        import { collection, addDoc } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
+
+        document.getElementById('btnSalvarGanho').onclick = async () => {
+            const desc = document.getElementById('descGanho').value;
+            const valor = document.getElementById('valorGanho').value;
+            const data = document.getElementById('dataGanho').value;
+
+            if(!desc || !valor || !data) return alert("Preencha todos os campos!");
+
+            await addDoc(collection(db, "transacoes"), {
+                descricao: desc,
+                valor: parseFloat(valor),
+                dataOcorrencia: data,
+                tipo: 'ganho',
+                dataRegistro: new Date()
+            });
+
+            alert("Ganho registrado!");
+            window.location.href = "index.html";
+        };
+    </script>
+</body>
+</html>
