@@ -16,7 +16,10 @@
         <div class="menu-grid">
             <a href="ganhos.html" class="menu-card verde">💰 Lançar Ganho</a>
             <a href="gastos.html" class="menu-card vermelho">💸 Lançar Gasto</a>
-            <a href="dashboard.html" class="menu-card azul">📊 Ver Dashboard</a>
+            <a href="dashboard.html" class="menu-card azul">📊 Ver Dashboard</a>    
+            
+            <button onclick="sair()" class="btn-menu" style="background: #7f8c8d; border:none; cursor:pointer; margin-top:10px;">Encerrar Sessão</button>
+
         </div>
     </main>
     <script type="module">
@@ -36,6 +39,5 @@ window.sair = async () => {
     window.location.href = "login.html";
 };
     </script>
-    <button onclick="sair()" class="btn-menu" style="background: #7f8c8d; border:none; cursor:pointer; margin-top:10px;">Encerrar Sessão</button>
 </body>
 </html>
