@@ -8,21 +8,13 @@
 </head>
 <body>
     <main>
-        <h2>💸 Novo Gasto</h2>
-
-        <label>O que você comprou?</label>
-        <input type="text" id="descGasto" placeholder="Ex: Assinatura Netflix">
-
-        <label>Quanto custou?</label>
-        <input type="number" id="valorGasto" placeholder="R$ 0.00">
-
-        <label>Quando foi?</label>
+        <h2>💸 Lançar Novo Gasto</h2>
+        
+        <input type="text" id="descGasto" placeholder="Descrição (Ex: Uber)">
+        <input type="number" id="valorGasto" placeholder="Valor R$">
         <input type="date" id="dataGasto">
+        <input type="text" id="localGasto" placeholder="Local (Ex: Shopping)">
 
-        <label>Onde foi?</label>
-        <input type="text" id="localGasto" placeholder="Ex: Streaming / Loja">
-
-        <label>Categoria</label>
         <select id="categoriaGasto">
             <option value="Alimentação">Alimentação</option>
             <option value="Transporte">Transporte</option>
@@ -45,27 +37,21 @@
             const desc = document.getElementById('descGasto').value;
             const valor = document.getElementById('valorGasto').value;
             const data = document.getElementById('dataGasto').value;
-            const local = document.getElementById('localGasto').value;
-            const categoria = document.getElementById('categoriaGasto').value;
 
-            if(!desc || !valor || !data) return alert("Por favor, preencha os campos principais!");
+            if(!desc || !valor || !data) return alert("Preencha os campos principais!");
 
-            try {
-                await addDoc(collection(db, "transacoes"), {
-                    descricao: desc,
-                    valor: parseFloat(valor),
-                    dataOcorrencia: data,
-                    local: local || "N/A",
-                    categoria: categoria,
-                    tipo: 'gasto',
-                    dataRegistro: new Date()
-                });
-                alert("Gasto registrado!");
-                window.location.href = "index.html";
-            } catch (e) {
-                console.error("Erro ao salvar: ", e);
-                alert("Erro ao salvar. Verifique o console.");
-            }
+            await addDoc(collection(db, "transacoes"), {
+                descricao: desc,
+                valor: parseFloat(valor),
+                dataOcorrencia: data,
+                local: document.getElementById('localGasto').value,
+                categoria: document.getElementById('categoriaGasto').value,
+                tipo: 'gasto',
+                dataRegistro: new Date()
+            });
+
+            alert("Gasto registrado com sucesso!");
+            window.location.href = "index.html";
         };
     </script>
 </body>
