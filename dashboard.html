@@ -3,51 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Dashboard Financeiro</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <main>
-        <h2>📊 Resumo</h2>
+    <main class="wide">
+        <h2>📊 Resumo Geral</h2>
         <div class="resumo">
-            <div class="card verde">Ganhos <span id="tGanhos">R$ 0</span></div>
-            <div class="card vermelho">Gastos <span id="tGastos">R$ 0</span></div>
-            <div class="card azul">Saldo Atual <span id="saldo">R$ 0</span></div>
+            <div class="card verde">Ganhos: <span id="totalGanhos">R$ 0</span></div>
+            <div class="card vermelho">Gastos: <span id="totalGastos">R$ 0</span></div>
+            <div class="card azul">Saldo: <span id="saldo">R$ 0</span></div>
         </div>
-        <div id="extrato"></div>
-        <a href="index.html" style="display:block; text-align:center; margin-top:20px; color:#666; text-decoration:none;">Voltar</a>
+
+        <h3>Extrato Detalhado</h3>
+        <div id="extrato">
+            </div>
+        
+        <a href="index.html" class="btn-voltar">Voltar ao Menu</a>
     </main>
 
     <script type="module">
         import { db } from './firebase-config.js';
-        import { collection, getDocs, query, orderBy, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
+        import { collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
 
-        window.excluir = async (id) => {
-            if(confirm("Excluir?")) {
-                await deleteDoc(doc(db, "transacoes", id));
-                location.reload();
-            }
-        };
-
-        async function carregar() {
+        async function carregarDados() {
             const q = query(collection(db, "transacoes"), orderBy("dataOcorrencia", "desc"));
-            const snap = await getDocs(q);
-            let g = 0, st = 0, h = "";
-            snap.forEach(d => {
-                const data = d.data();
-                if(data.tipo === 'ganho') g += data.valor; else st += data.valor;
-                h += `<div class="item-extrato">
-                        <div class="info"><strong>${data.descricao}</strong><small>${data.dataOcorrencia}</small></div>
-                        <div class="valor-box">R$ ${data.valor.toFixed(2)}<br>
-                        <button class="btn-excluir" onclick="excluir('${d.id}')">Excluir</button></div>
-                      </div>`;
+            const querySnapshot = await getDocs(q);
+            
+            let tGanhos = 0, tGastos = 0, html = "";
+
+            querySnapshot.forEach((doc) => {
+                const d = doc.data();
+                if(d.tipo === 'ganho') tGanhos += d.valor;
+                else tGastos += d.valor;
+
+                // Aqui montamos a linha do extrato com Local e Categoria se houver
+                html += `
+                    <div class="item-extrato ${d.tipo}">
+                        <div class="info">
+                            <strong>${d.descricao}</strong>
+                            <span>${d.categoria || 'Ganho'} | ${d.local || 'Geral'}</span>
+                            <small>${d.dataOcorrencia}</small>
+                        </div>
+                        <div class="valor">R$ ${d.valor.toFixed(2)}</div>
+                    </div>`;
             });
-            document.getElementById('tGanhos').innerText = `R$ ${g.toFixed(2)}`;
-            document.getElementById('tGastos').innerText = `R$ ${st.toFixed(2)}`;
-            document.getElementById('saldo').innerText = `R$ ${(g-st).toFixed(2)}`;
-            document.getElementById('extrato').innerHTML = h;
+
+            document.getElementById('totalGanhos').innerText = `R$ ${tGanhos.toFixed(2)}`;
+            document.getElementById('totalGastos').innerText = `R$ ${tGastos.toFixed(2)}`;
+            document.getElementById('saldo').innerText = `R$ ${(tGanhos - tGastos).toFixed(2)}`;
+            document.getElementById('extrato').innerHTML = html;
         }
-        carregar();
+
+        carregarDados();
     </script>
 </body>
 </html>
