@@ -9,11 +9,11 @@
 <body>
     <main>
         <h2>💰 Novo Ganho</h2>
-        <br>
         <input type="text" id="descGanho" placeholder="Descrição (Ex: Salário)">
         <input type="number" id="valorGanho" placeholder="Valor R$">
         <input type="date" id="dataGanho">
-        <button id="btnSalvar">Salvar Ganho</button>
+        
+        <button id="btnSalvarGanho">Salvar Ganho</button>
         <a href="index.html" class="btn-voltar">Voltar ao Menu</a>
     </main>
 
@@ -21,18 +21,22 @@
         import { db } from './firebase-config.js';
         import { collection, addDoc } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
 
-        document.getElementById('btnSalvar').onclick = async () => {
+        document.getElementById('btnSalvarGanho').onclick = async () => {
             const desc = document.getElementById('descGanho').value;
             const valor = document.getElementById('valorGanho').value;
             const data = document.getElementById('dataGanho').value;
 
-            if(!desc || !valor || !data) return alert("Preencha tudo!");
+            if(!desc || !valor || !data) return alert("Preencha todos os campos!");
 
             await addDoc(collection(db, "transacoes"), {
-                descricao: desc, valor: parseFloat(valor), dataOcorrencia: data, tipo: 'ganho', dataRegistro: new Date()
+                descricao: desc,
+                valor: parseFloat(valor),
+                dataOcorrencia: data,
+                tipo: 'ganho',
+                dataRegistro: new Date()
             });
 
-            alert("Ganho salvo!");
+            alert("Ganho registrado!");
             window.location.href = "index.html";
         };
     </script>
