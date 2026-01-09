@@ -4,16 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lançar Ganhos</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+        body { background: #f4f7f6; display: flex; justify-content: center; padding: 20px; min-height: 100vh; }
+        main { background: white; width: 100%; max-width: 400px; padding: 25px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        input { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; }
+        button { width: 100%; padding: 15px; border: none; background: #2ecc71; color: white; font-weight: bold; border-radius: 8px; cursor: pointer; }
+        .btn-voltar { display: block; text-align: center; margin-top: 15px; color: #666; text-decoration: none; font-size: 0.9rem; }
+    </style>
 </head>
 <body>
     <main>
         <h2>💰 Novo Ganho</h2>
+        <br>
         <input type="text" id="descGanho" placeholder="Descrição (Ex: Salário)">
         <input type="number" id="valorGanho" placeholder="Valor R$">
         <input type="date" id="dataGanho">
-        
-        <button id="btnSalvarGanho">Salvar Ganho</button>
+        <button id="btnSalvar">Salvar Ganho</button>
         <a href="index.html" class="btn-voltar">Voltar ao Menu</a>
     </main>
 
@@ -21,22 +28,18 @@
         import { db } from './firebase-config.js';
         import { collection, addDoc } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
 
-        document.getElementById('btnSalvarGanho').onclick = async () => {
+        document.getElementById('btnSalvar').onclick = async () => {
             const desc = document.getElementById('descGanho').value;
             const valor = document.getElementById('valorGanho').value;
             const data = document.getElementById('dataGanho').value;
 
-            if(!desc || !valor || !data) return alert("Preencha todos os campos!");
+            if(!desc || !valor || !data) return alert("Preencha tudo!");
 
             await addDoc(collection(db, "transacoes"), {
-                descricao: desc,
-                valor: parseFloat(valor),
-                dataOcorrencia: data,
-                tipo: 'ganho',
-                dataRegistro: new Date()
+                descricao: desc, valor: parseFloat(valor), dataOcorrencia: data, tipo: 'ganho', dataRegistro: new Date()
             });
 
-            alert("Ganho registrado!");
+            alert("Ganho salvo!");
             window.location.href = "index.html";
         };
     </script>
