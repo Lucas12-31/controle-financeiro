@@ -34,33 +34,4 @@ button { width: 100%; padding: 15px; border: none; background: #2ecc71; color: w
 .item-extrato .info small { font-size: 0.7rem; color: #999; }
 .item-extrato .valor { font-weight: bold; }
 
-/* No seu style.css */
-
-.btn-excluir { 
-    background: #ff4757; 
-    color: white; 
-    border: none; 
-    padding: 8px 0; /* Aumentei um pouco o respiro vertical */
-    border-radius: 5px; 
-    cursor: pointer; 
-    font-size: 0.75rem;
-    font-weight: bold;
-    width: 80px; /* Define um tamanho fixo para todos */
-    text-align: center;
-    transition: 0.2s;
-    margin-top: 5px;
-    display: inline-block; /* Garante que respeite a largura */
-}
-
-.btn-excluir:hover { 
-    background: #ff6b81; 
-    transform: scale(1.05);
-}
-
-/* Ajuste no container do valor para alinhar o botão à direita */
-.item-extrato .valor {
-    text-align: right;
-    min-width: 90px; /* Garante espaço para o botão não empurrar o texto */
-}
-
 .btn-voltar { display: block; text-align: center; margin-top: 20px; color: #666; text-decoration: none; font-size: 0.9rem; }
