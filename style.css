@@ -1,14 +1,14 @@
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
 body { 
     background-color: #f4f7f6; 
-    background-attachment: fixed; /* O fundo não rola com o conteúdo */
+    background-attachment: fixed; 
     display: flex; 
     justify-content: center; 
-    align-items: flex-start; /* Alinha o conteúdo no topo */
-    min-height: 100vh; /* Garante que o fundo cubra a tela toda */
+    align-items: flex-start; 
+    min-height: 100vh; 
     margin: 0; 
     padding: 20px;
-    overflow-x: hidden; /* Evita que a página "dance" para os lados */
+    overflow-x: hidden; 
 }
 
 main { 
@@ -18,11 +18,11 @@ main {
     padding: 25px; 
     border-radius: 15px; 
     box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
-    margin: 0 auto; /* Reforça a centralização */
+    margin: 0 auto; 
 }
 
 main.wide { 
-    max-width: 600px; /* Mantém o Dashboard um pouco mais largo */
+    max-width: 600px; 
 }
 
 h2 { margin-bottom: 20px; text-align: center; color: #333; }
@@ -95,7 +95,7 @@ button { width: 100%; padding: 15px; border: none; background: #2ecc71; color: w
     display: flex;
     gap: 20px;
     width: 100%;
-    max-width: 1000px; /* Aumentamos para caber tudo lado a lado */
+    max-width: 1000px; 
     align-items: flex-start;
 }
 
@@ -108,14 +108,21 @@ button { width: 100%; padding: 15px; border: none; background: #2ecc71; color: w
 }
 
 .conteudo-principal {
-    flex: 1; /* O resumo e extrato ocupam o resto do espaço */
+    flex: 1; 
 }
 
-/* Estilo para os itens na lista de fixos */
 .item-fixo {
     display: flex;
     justify-content: space-between;
     padding: 10px 0;
     border-bottom: 1px solid #eee;
     font-size: 0.9rem;
+}
+
+.coluna-fixos h3 {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    color: #2c3e50;
+    border-bottom: 2px solid #f4f7f6;
+    padding-bottom: 10px;
 }
