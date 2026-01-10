@@ -91,3 +91,31 @@ button { width: 100%; padding: 15px; border: none; background: #2ecc71; color: w
     text-align: right;
     min-width: 90px; 
 }
+.dashboard-layout {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    max-width: 1000px; /* Aumentamos para caber tudo lado a lado */
+    align-items: flex-start;
+}
+
+.coluna-fixos {
+    width: 280px;
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.conteudo-principal {
+    flex: 1; /* O resumo e extrato ocupam o resto do espaço */
+}
+
+/* Estilo para os itens na lista de fixos */
+.item-fixo {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 0.9rem;
+}
