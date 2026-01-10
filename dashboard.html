@@ -7,53 +7,47 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <main class="wide">
-        <h2>📊 Resumo Geral</h2>
-        
-        <div class="filtro-container">
-            <label>Filtrar por Mês: </label>
-            <select id="filtroMes" onchange="carregarDados()">
-                <option value="todos">Todos os meses</option>
-                <option value="atual" selected>Mês Atual</option>
-            </select>
-        </div>
+    <div class="dashboard-layout">
+        <aside class="coluna-fixos">
+            <h3>📌 Gastos Fixos</h3>
+            <div id="listaFixos"></div>
+        </aside>
 
-        <div class="resumo">
-            <div class="card verde">Ganhos: <span id="totalGanhos">R$ 0</span></div>
-            <div class="card vermelho">Gastos: <span id="totalGastos">R$ 0</span></div>
-            <div class="card azul">Saldo: <span id="saldo">R$ 0</span></div>
-        </div>
+        <div class="conteudo-principal">
+            <main class="wide" style="margin: 0; width: 100%;">
+                <h2>📊 Resumo Geral</h2>
+                <div class="filtro-container" style="text-align: center; margin-bottom: 20px;">
+                    <label>Filtrar por Mês: </label>
+                    <select id="filtroMes" onchange="carregarDados()" style="width: auto; display: inline-block;">
+                        <option value="todos">Todos os meses</option>
+                        <option value="atual" selected>Mês Atual</option>
+                    </select>
+                </div>
 
-        <h3>Extrato Detalhado</h3>
-        <div id="extrato"></div>
-        
-        <a href="index.html" class="btn-voltar">Voltar ao Menu</a>
-    </main>
+                <div class="resumo">
+                    <div class="card verde">Ganhos: <span id="totalGanhos">R$ 0</span></div>
+                    <div class="card vermelho">Gastos: <span id="totalGastos">R$ 0</span></div>
+                    <div class="card azul">Saldo: <span id="saldo">R$ 0</span></div>
+                </div>
+
+                <h3>Extrato Detalhado</h3>
+                <div id="extrato"></div>
+                <a href="index.html" class="btn-voltar">Voltar ao Menu</a>
+            </main>
+        </div>
+    </div>
 
     <script type="module">
-        import { db } from './firebase-config.js';
+        import { db, auth } from './firebase-config.js';
         import { collection, getDocs, query, orderBy, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
-        import { auth } from './firebase-config.js';
         import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
 
-// Trava de segurança: Se não estiver logado, volta para o login
-onAuthStateChanged(auth, (user) => {
-    if (!user) {
-        window.location.href = "login.html";
-    }
-});
+        onAuthStateChanged(auth, (user) => { if (!user) window.location.href = "login.html"; });
 
-// Se for o index.html, você pode adicionar a função de sair
-window.sair = async () => {
-    await signOut(auth);
-    window.location.href = "login.html";
-};
-        // Função para deletar um item
         window.excluirItem = async (id) => {
-            if(confirm("Tem certeza que deseja excluir este lançamento?")) {
+            if(confirm("Tem certeza que deseja excluir?")) {
                 await deleteDoc(doc(db, "transacoes", id));
-                alert("Excluído com sucesso!");
-                carregarDados(); // Recarrega o dashboard
+                carregarDados();
             }
         };
 
@@ -61,30 +55,26 @@ window.sair = async () => {
             const q = query(collection(db, "transacoes"), orderBy("dataOcorrencia", "desc"));
             const querySnapshot = await getDocs(q);
             const filtro = document.getElementById('filtroMes').value;
-            
             const hoje = new Date();
-            const mesAtual = hoje.getMonth() + 1; // Janeiro é 0
-            const anoAtual = hoje.getFullYear();
-
-            let tGanhos = 0, tGastos = 0, html = "";
+            
+            let tGanhos = 0, tGastos = 0, htmlExtrato = "", htmlFixos = "";
 
             querySnapshot.forEach((documento) => {
                 const d = documento.data();
                 const id = documento.id;
-                
-                // Lógica do Filtro de Mês
                 const dataTransacao = new Date(d.dataOcorrencia + "T00:00:00");
-                const mesTransacao = dataTransacao.getMonth() + 1;
-                const anoTransacao = dataTransacao.getFullYear();
 
-                if (filtro === "atual" && (mesTransacao !== mesAtual || anoTransacao !== anoAtual)) {
-                    return; // Pula este item se não for do mês atual
-                }
+                if (filtro === "atual" && (dataTransacao.getMonth() !== hoje.getMonth() || dataTransacao.getFullYear() !== hoje.getFullYear())) return;
 
                 if(d.tipo === 'ganho') tGanhos += d.valor;
                 else tGastos += d.valor;
 
-                html += `
+                // Alimenta a lista de fixos lateral
+                if(d.fixo) {
+                    htmlFixos += `<div class="item-fixo"><span>${d.descricao}</span><strong>R$ ${d.valor.toFixed(2)}</strong></div>`;
+                }
+
+                htmlExtrato += `
                     <div class="item-extrato ${d.tipo}">
                         <div class="info">
                             <strong>${d.descricao}</strong>
@@ -92,8 +82,7 @@ window.sair = async () => {
                             <small>${d.dataOcorrencia}</small>
                         </div>
                         <div class="valor">
-                            R$ ${d.valor.toFixed(2)}
-                            <br>
+                            R$ ${d.valor.toFixed(2)}<br>
                             <button class="btn-excluir" onclick="excluirItem('${id}')">Excluir</button>
                         </div>
                     </div>`;
@@ -102,7 +91,8 @@ window.sair = async () => {
             document.getElementById('totalGanhos').innerText = `R$ ${tGanhos.toFixed(2)}`;
             document.getElementById('totalGastos').innerText = `R$ ${tGastos.toFixed(2)}`;
             document.getElementById('saldo').innerText = `R$ ${(tGanhos - tGastos).toFixed(2)}`;
-            document.getElementById('extrato').innerHTML = html;
+            document.getElementById('listaFixos').innerHTML = htmlFixos || "<p style='color:#999; font-size:0.8rem;'>Nenhum fixo este mês.</p>";
+            document.getElementById('extrato').innerHTML = htmlExtrato;
         }
 
         window.carregarDados = carregarDados;
