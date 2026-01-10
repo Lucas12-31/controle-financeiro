@@ -9,7 +9,6 @@
 <body>
     <main>
         <h2>💸 Lançar Novo Gasto</h2>
-        
         <input type="text" id="descGasto" placeholder="Descrição (Ex: Uber)">
         <input type="number" id="valorGasto" placeholder="Valor R$">
         <input type="date" id="dataGasto">
@@ -25,31 +24,28 @@
             <option value="Outros">Outros</option>
         </select>
 
+        <div style="margin-bottom: 15px;">
+            <input type="checkbox" id="fixoGasto" style="width: 20px;"> Este é um Gasto Fixo?
+        </div>
+
         <button id="btnSalvarGasto">Salvar Gasto</button>
         <a href="index.html" class="btn-voltar">Voltar ao Menu</a>
     </main>
 
     <script type="module">
-        import { db } from './firebase-config.js';
+        import { db, auth } from './firebase-config.js';
         import { collection, addDoc } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
-        import { auth } from './firebase-config.js';
         import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
 
-onAuthStateChanged(auth, (user) => {
-    if (!user) {
-        window.location.href = "login.html";
-    }
-});
-
-window.sair = async () => {
-    await signOut(auth);
-    window.location.href = "login.html";
-};
+        onAuthStateChanged(auth, (user) => {
+            if (!user) window.location.href = "login.html";
+        });
 
         document.getElementById('btnSalvarGasto').onclick = async () => {
             const desc = document.getElementById('descGasto').value;
             const valor = document.getElementById('valorGasto').value;
             const data = document.getElementById('dataGasto').value;
+            const fixo = document.getElementById('fixoGasto').checked; // Captura o checkbox
 
             if(!desc || !valor || !data) return alert("Preencha os campos principais!");
 
@@ -59,6 +55,7 @@ window.sair = async () => {
                 dataOcorrencia: data,
                 local: document.getElementById('localGasto').value,
                 categoria: document.getElementById('categoriaGasto').value,
+                fixo: fixo, // Salva o estado do gasto fixo
                 tipo: 'gasto',
                 dataRegistro: new Date()
             });
