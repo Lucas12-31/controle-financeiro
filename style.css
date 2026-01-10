@@ -57,3 +57,37 @@ button { width: 100%; padding: 15px; border: none; background: #2ecc71; color: w
 .item-extrato .valor { font-weight: bold; }
 
 .btn-voltar { display: block; text-align: center; margin-top: 20px; color: #666; text-decoration: none; font-size: 0.9rem; }
+
+.menu-card.cinza { 
+    background-color: #7f8c8d; 
+    border: none; 
+    cursor: pointer; 
+    width: 100%; 
+    font-size: 1rem; 
+}
+
+.btn-excluir { 
+    background: #ff4757; 
+    color: white; 
+    border: none; 
+    padding: 8px 0; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    font-size: 0.75rem;
+    font-weight: bold;
+    width: 80px; 
+    text-align: center;
+    transition: 0.2s;
+    margin-top: 5px;
+    display: inline-block; 
+}
+
+.btn-excluir:hover { 
+    background: #ff6b81; 
+    transform: scale(1.05);
+}
+
+.item-extrato .valor {
+    text-align: right;
+    min-width: 90px; 
+}
