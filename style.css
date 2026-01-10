@@ -126,3 +126,37 @@ button { width: 100%; padding: 15px; border: none; background: #2ecc71; color: w
     border-bottom: 2px solid #f4f7f6;
     padding-bottom: 10px;
 }
+
+/* Ajustes para Celular (Telas menores que 768px) */
+@media (max-width: 768px) {
+    /* Faz a coluna de Gastos Fixos ficar em cima do Resumo */
+    .dashboard-layout {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .coluna-fixos {
+        width: 100%;
+        max-width: 450px; /* Alinha com o tamanho do conteúdo principal */
+    }
+
+    .conteudo-principal {
+        width: 100%;
+        max-width: 450px;
+    }
+
+    /* Corrige o campo de data que aparece "estranho" no mobile */
+    input[type="date"] {
+        appearance: none;
+        -webkit-appearance: none;
+        min-height: 45px;
+        background-color: white;
+    }
+
+    /* Melhora o espaçamento dos botões no mobile */
+    .menu-card {
+        padding: 18px;
+        font-size: 1rem;
+    }
+}
