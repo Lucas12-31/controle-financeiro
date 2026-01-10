@@ -40,12 +40,12 @@
     <script type="module">
         import { db, auth } from './firebase-config.js';
         import { collection, getDocs, query, orderBy, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
-        import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
 
         onAuthStateChanged(auth, (user) => { if (!user) window.location.href = "login.html"; });
 
         window.excluirItem = async (id) => {
-            if(confirm("Tem certeza que deseja excluir?")) {
+            if(confirm("Deseja excluir?")) {
                 await deleteDoc(doc(db, "transacoes", id));
                 carregarDados();
             }
@@ -62,16 +62,20 @@
             querySnapshot.forEach((documento) => {
                 const d = documento.data();
                 const id = documento.id;
-                const dataTransacao = new Date(d.dataOcorrencia + "T00:00:00");
+                const dataT = new Date(d.dataOcorrencia + "T00:00:00");
 
-                if (filtro === "atual" && (dataTransacao.getMonth() !== hoje.getMonth() || dataTransacao.getFullYear() !== hoje.getFullYear())) return;
+                if (filtro === "atual" && (dataT.getMonth() !== hoje.getMonth() || dataT.getFullYear() !== hoje.getFullYear())) return;
 
                 if(d.tipo === 'ganho') tGanhos += d.valor;
                 else tGastos += d.valor;
 
-                // Alimenta a lista de fixos lateral
-                if(d.fixo) {
-                    htmlFixos += `<div class="item-fixo"><span>${d.descricao}</span><strong>R$ ${d.valor.toFixed(2)}</strong></div>`;
+                // SE FOR FIXO, ADICIONA NA COLUNA LATERAL
+                if(d.fixo === true) {
+                    htmlFixos += `
+                        <div class="item-fixo">
+                            <span>${d.descricao}</span>
+                            <strong>R$ ${d.valor.toFixed(2)}</strong>
+                        </div>`;
                 }
 
                 htmlExtrato += `
@@ -91,10 +95,9 @@
             document.getElementById('totalGanhos').innerText = `R$ ${tGanhos.toFixed(2)}`;
             document.getElementById('totalGastos').innerText = `R$ ${tGastos.toFixed(2)}`;
             document.getElementById('saldo').innerText = `R$ ${(tGanhos - tGastos).toFixed(2)}`;
-            document.getElementById('listaFixos').innerHTML = htmlFixos || "<p style='color:#999; font-size:0.8rem;'>Nenhum fixo este mês.</p>";
+            document.getElementById('listaFixos').innerHTML = htmlFixos || "<p style='color:#999; font-size:0.8rem;'>Nenhum fixo.</p>";
             document.getElementById('extrato').innerHTML = htmlExtrato;
         }
-
         window.carregarDados = carregarDados;
         carregarDados();
     </script>
