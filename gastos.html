@@ -35,14 +35,12 @@
         import { auth } from './firebase-config.js';
         import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
 
-// Trava de segurança: Se não estiver logado, volta para o login
 onAuthStateChanged(auth, (user) => {
     if (!user) {
         window.location.href = "login.html";
     }
 });
 
-// Se for o index.html, você pode adicionar a função de sair
 window.sair = async () => {
     await signOut(auth);
     window.location.href = "login.html";
