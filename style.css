@@ -114,7 +114,7 @@ button { width: 100%; padding: 15px; border: none; background: #2ecc71; color: w
 .item-fixo {
     display: flex;
     justify-content: space-between;
-    align-items: center; /* Centraliza verticalmente o texto e o valor */
+    align-items: center;
     padding: 12px 0;
     border-bottom: 1px solid #eee;
 }
@@ -129,7 +129,6 @@ button { width: 100%; padding: 15px; border: none; background: #2ecc71; color: w
 
 /* Ajustes para Celular (Telas menores que 768px) */
 @media (max-width: 768px) {
-    /* Faz a coluna de Gastos Fixos ficar em cima do Resumo */
     .dashboard-layout {
         flex-direction: column;
         align-items: center;
@@ -138,7 +137,7 @@ button { width: 100%; padding: 15px; border: none; background: #2ecc71; color: w
 
     .coluna-fixos {
         width: 100%;
-        max-width: 450px; /* Alinha com o tamanho do conteúdo principal */
+        max-width: 450px;
     }
 
     .conteudo-principal {
@@ -146,15 +145,24 @@ button { width: 100%; padding: 15px; border: none; background: #2ecc71; color: w
         max-width: 450px;
     }
 
-    /* Corrige o campo de data que aparece "estranho" no mobile */
     input[type="date"] {
-        appearance: none;
-        -webkit-appearance: none;
-        min-height: 45px;
-        background-color: white;
-    }
-
-    /* Melhora o espaçamento dos botões no mobile */
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: #fff;
+    color: #333;
+    font-size: 1rem;
+    min-height: 50px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+}
+    
+    input[type="date"]::-webkit-inner-spin-button,
+    input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+}
     .menu-card {
         padding: 18px;
         font-size: 1rem;
