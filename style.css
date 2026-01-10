@@ -114,9 +114,9 @@ button { width: 100%; padding: 15px; border: none; background: #2ecc71; color: w
 .item-fixo {
     display: flex;
     justify-content: space-between;
-    padding: 10px 0;
+    align-items: center; /* Centraliza verticalmente o texto e o valor */
+    padding: 12px 0;
     border-bottom: 1px solid #eee;
-    font-size: 0.9rem;
 }
 
 .coluna-fixos h3 {
