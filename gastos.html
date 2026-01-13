@@ -49,7 +49,7 @@
             const desc = document.getElementById('descGasto').value;
             const valor = document.getElementById('valorGasto').value;
             const data = document.getElementById('dataGasto').value;
-            const fixo = document.getElementById('fixoGasto').checked; // Captura o checkbox
+            const fixo = document.getElementById('fixoGasto').checked;
 
             if(!desc || !valor || !data) return alert("Preencha os campos principais!");
 
@@ -59,7 +59,7 @@
                 dataOcorrencia: data,
                 local: document.getElementById('localGasto').value,
                 categoria: document.getElementById('categoriaGasto').value,
-                fixo: fixo, // Salva o estado do gasto fixo
+                fixo: fixo,
                 tipo: 'gasto',
                 dataRegistro: new Date()
             });
